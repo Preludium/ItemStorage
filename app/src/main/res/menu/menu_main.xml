@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.itemstorage.pl.mik.itemstorage.MainActivity">
+    <item
+        android:id="@+id/action_gallery"
+        android:icon="@drawable/ic_photo_library_white_18dp"
+        app:showAsAction="ifRoom"
+        android:title="@string/choose_from_gallery" />
+    <item
+        android:id="@+id/action_add_photo"
+        android:icon="@drawable/ic_add_a_photo_white_18dp"
+        app:showAsAction="ifRoom"
+        android:title="@string/add_photo" />
+</menu>

@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">ItemStorage</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="item_storage">Item Storage</string>
+    <string name="no_account_yet_sign_up">No account yet? Sign Up</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="repeat_password">Repeat Password</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="tab_title_localizations">Localizations</string>
+    <string name="tab_title_all_items">All Items</string>
+    <string name="title_activity_new_localization">NewLocalizationActivity</string>
+    <string name="title_activity_new_item">NewItemActivity</string>
+    <string name="title_activity_new_box">NewBoxActivity</string>
+    <string name="new_item">New Item</string>
+    <string name="name">Name</string>
+    <string name="new_box">New Box</string>
+    <string name="title_activity_hulp">hulp</string>
+    <string name="title_activity_template">template</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="create">Create</string>
+    <string name="title_activity_images">ImagesActivity</string>
+    <string name="images">Select Images</string>
+    <string name="no_images_found_click_the_button_to_add_one">No Images found. Click the button to add one</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="select_localization">Select Localization</string>
+    <string name="add_code">Add Code</string>
+    <string name="new_image">New Image</string>
+    <string name="add_photo">Add photo</string>
+    <string name="choose_from_gallery">Choose from gallery</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="new_localization">New Localization</string>
+</resources>

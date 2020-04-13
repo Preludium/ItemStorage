@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    >
+
+    <TextView
+        android:id="@+id/new_box_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_box"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/new_box_name"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/new_box_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="200dp"
+        android:hint="@string/name"
+        android:inputType="text"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/new_box_title"
+        app:layout_constraintBottom_toTopOf="@id/new_box_localization"
+        tools:ignore="MissingConstraints"
+        android:gravity="center_horizontal" />
+
+    <EditText
+        android:id="@+id/new_box_localization"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_background"
+        android:text="@string/select_localization"
+        android:width="200dp"
+        android:padding="8dp"
+        android:focusable="false"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/new_box_name"
+        app:layout_constraintBottom_toTopOf="@id/new_box_images"
+        tools:ignore="MissingConstraints"
+        android:gravity="center_horizontal" />
+
+    <EditText
+        android:id="@+id/new_box_images"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/images"
+        android:background="@drawable/edit_text_background"
+        android:width="200dp"
+        android:padding="8dp"
+        android:focusable="false"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/new_box_localization"
+        app:layout_constraintBottom_toTopOf="@id/new_box_code"
+        tools:ignore="MissingConstraints"
+        android:gravity="center_horizontal" />
+
+    <EditText
+        android:id="@+id/new_box_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_code"
+        android:background="@drawable/edit_text_background"
+        android:width="200dp"
+        android:padding="8dp"
+        android:focusable="false"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/new_box_images"
+        app:layout_constraintBottom_toTopOf="@id/new_box_description"
+        tools:ignore="MissingConstraints"
+        android:gravity="center_horizontal" />
+
+    <EditText
+        android:id="@+id/new_box_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="200dp"
+        android:hint="@string/description"
+        android:inputType="textMultiLine"
+        android:textAlignment="center"
+        android:layout_marginBottom="40dp"
+        android:maxLines="5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/new_box_code"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="MissingConstraints"
+        android:gravity="center_horizontal" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
