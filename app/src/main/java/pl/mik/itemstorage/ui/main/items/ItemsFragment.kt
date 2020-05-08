@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pl.mik.itemstorage.R
+import pl.mik.itemstorage.ui.main.TabSwitch
 
-class ItemsFragment : Fragment() {
+class ItemsFragment : Fragment(), TabSwitch{
 
     private lateinit var recyclerView: RecyclerView
 
@@ -25,6 +26,8 @@ class ItemsFragment : Fragment() {
         return view
     }
 
+
+
     override fun onResume() {
         super.onResume()
         recyclerView = view!!.findViewById(R.id.localizations_recycler)
@@ -34,4 +37,11 @@ class ItemsFragment : Fragment() {
         recyclerView.adapter = ItemsRecyclerViewAdapter()
     }
 
+    override fun fragmentBecameVisible() {
+        recyclerView = view!!.findViewById(R.id.localizations_recycler)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+//        recyclerView.addItemDecoration(DividerItemDecoration(context, (recyclerView.layoutManager as LinearLayoutManager).orientation))
+        recyclerView.setHasFixedSize(true)
+        recyclerView.adapter = ItemsRecyclerViewAdapter()
+    }
 }

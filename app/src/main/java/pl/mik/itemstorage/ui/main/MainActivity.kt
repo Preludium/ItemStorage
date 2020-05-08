@@ -18,8 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        view_pager.adapter =
-            MainPagerAdapter(supportFragmentManager)
+        view_pager.adapter = MainPagerAdapter(supportFragmentManager)
         tabs.setupWithViewPager(view_pager)
 
         new_localization_fab.hide()
@@ -36,9 +35,13 @@ class MainActivity : AppCompatActivity() {
                 if(position == 0) {
                     new_localization_fab.hide()
                     main_fab.setImageResource(android.R.drawable.ic_input_add)
+                    val fragment = (view_pager.adapter as MainPagerAdapter).instantiateItem(view_pager, position) as TabSwitch
+                    fragment.fragmentBecameVisible()
                 } else {
                     new_localization_fab.show()
                     main_fab.setImageResource(R.drawable.ic_box_white_18dp)
+                    val fragment = (view_pager.adapter as MainPagerAdapter).instantiateItem(view_pager, position) as TabSwitch
+                    fragment.fragmentBecameVisible()
                 }
             }
         })

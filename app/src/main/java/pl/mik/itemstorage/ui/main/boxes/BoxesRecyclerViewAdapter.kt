@@ -20,6 +20,11 @@ class BoxesRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     private var flattenList: ArrayList<Any> = ArrayList()
 
     init {
+        createList()
+    }
+
+    private fun createList() {
+        flattenList = ArrayList()
         val locals = App.database?.localizations()?.getAll()
         if (locals != null) {
             for (item in locals) {
@@ -109,10 +114,9 @@ class BoxesRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
                 builder.setMessage("Are you sure you want to delete ${item.name} localization with all boxes in it?")
                     .setCancelable(false)
                     .setPositiveButton("Yes") { dialog, id ->
-                        flattenList.removeAt(position) // TODO usunac wszystkie boxy dla danej lokalizacji w flattenList
-                        notifyItemRemoved(position)
-                        notifyItemRangeChanged(position, flattenList.size)
                         App.database?.localizations()?.delete(item)
+                        createList()
+                        notifyDataSetChanged()
                     }
                     .setNegativeButton("No") { dialog, id ->
                         dialog.dismiss()
@@ -123,3 +127,4 @@ class BoxesRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         }
     }
 }
+

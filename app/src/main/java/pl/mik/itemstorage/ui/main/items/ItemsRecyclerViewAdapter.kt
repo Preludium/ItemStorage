@@ -23,6 +23,11 @@ class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     private var flattenList: ArrayList<Any> = ArrayList()
 
     init {
+        createList()
+    }
+
+    private fun createList() {
+        flattenList = ArrayList()
         val boxes = App.database?.boxes()?.getAll()
         if (boxes != null) {
             for (box in boxes) {
@@ -93,10 +98,9 @@ class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
                 builder.setMessage("Are you sure you want to delete ${item.name} box with all items in it?")
                     .setCancelable(false)
                     .setPositiveButton("Yes") { dialog, id ->
-                        flattenList.removeAt(position) // TODO usunac wszystkie itemy dla danego boxa w flattenList
-                        notifyItemRemoved(position)
-                        notifyItemRangeChanged(position, flattenList.size)
                         App.database?.boxes()?.delete(item)
+                        createList()
+                        notifyDataSetChanged()
                     }
                     .setNegativeButton("No") { dialog, id ->
                         dialog.dismiss()

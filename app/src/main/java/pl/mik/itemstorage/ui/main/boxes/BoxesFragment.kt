@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pl.mik.itemstorage.R
+import pl.mik.itemstorage.ui.main.TabSwitch
 
 
-class BoxesFragment : Fragment() {
+class BoxesFragment : Fragment(), TabSwitch {
 
     private lateinit var recyclerView: RecyclerView
 
@@ -24,8 +24,7 @@ class BoxesFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
 //        recyclerView.addItemDecoration(DividerItemDecoration(context, (recyclerView.layoutManager as LinearLayoutManager).orientation))
         recyclerView.setHasFixedSize(true)
-        recyclerView.adapter =
-            BoxesRecyclerViewAdapter()
+        recyclerView.adapter = BoxesRecyclerViewAdapter()
 
         return view
     }
@@ -36,7 +35,14 @@ class BoxesFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
 //        recyclerView.addItemDecoration(DividerItemDecoration(context, (recyclerView.layoutManager as LinearLayoutManager).orientation))
         recyclerView.setHasFixedSize(true)
-        recyclerView.adapter =
-            BoxesRecyclerViewAdapter()
+        recyclerView.adapter = BoxesRecyclerViewAdapter()
+    }
+
+    override fun fragmentBecameVisible() {
+        recyclerView = view!!.findViewById(R.id.localizations_recycler)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+//        recyclerView.addItemDecoration(DividerItemDecoration(context, (recyclerView.layoutManager as LinearLayoutManager).orientation))
+        recyclerView.setHasFixedSize(true)
+        recyclerView.adapter = BoxesRecyclerViewAdapter()
     }
 }
