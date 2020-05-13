@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import pl.mik.itemstorage.database.App
 import pl.mik.itemstorage.R
@@ -15,12 +17,14 @@ import pl.mik.itemstorage.database.entities.Localization
 import pl.mik.itemstorage.ui.item.NewItemActivity
 import pl.mik.itemstorage.ui.localization.NewLocalizationActivity
 import pl.mik.itemstorage.ui.main.boxes.BoxesGroupItemViewHolder
+import java.util.*
 import kotlin.collections.ArrayList
 
-class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
     private val ITEM_VIEW = 0
     private val SECTION_VIEW = 1
     private var flattenList: ArrayList<Any> = ArrayList()
+//    private var filteredList = ArrayList<Any>()
 
     init {
         createList()
@@ -123,6 +127,46 @@ class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
                     }
                 val alert = builder.create()
                 alert.show()
+            }
+        }
+    }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val searchString = constraint.toString().toLowerCase()
+                if (constraint.isNullOrEmpty()) {
+                    createList()
+                }
+                else {
+                    var helpList = ArrayList<Any>()
+                    loop@ for (item in flattenList) {
+                        when (item) {
+                            is Box -> {
+                                continue@loop
+                            }
+
+                            is Item -> {
+                                if (item.ean_upc_code!!.toLowerCase().contains(searchString)
+                                    || item.name.toLowerCase().contains(searchString)
+                                    || item.description!!.toLowerCase().contains(searchString)) {
+
+                                    helpList.add(item)
+                                }
+                            }
+                        }
+                    }
+                    flattenList = helpList
+                }
+
+                val filterResults = FilterResults()
+                filterResults.values = flattenList
+                return filterResults
+            }
+
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                flattenList = results?.values as ArrayList<Any>
+                notifyDataSetChanged()
             }
         }
     }
