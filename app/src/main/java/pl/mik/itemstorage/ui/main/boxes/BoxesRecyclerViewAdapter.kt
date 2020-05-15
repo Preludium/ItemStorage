@@ -25,11 +25,11 @@ class BoxesRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 
     private fun createList() {
         flattenList = ArrayList()
-        val locals = App.database?.localizations()?.getAll()
+        val locals = App.database?.localizations()?.getAllByUserId(App.session!!.userId)?.sortedBy { it.name }
         if (locals != null) {
             for (item in locals) {
                 flattenList.add(item)
-                for (box in App.database?.boxes()?.getAllBoxesByLocalizationId(item.id)!!) {
+                for (box in App.database?.boxes()?.getAllBoxesByLocalizationId(item.id)!!.sortedBy { it.name }) {
                     flattenList.add(box)
                 }
             }
@@ -73,6 +73,11 @@ class BoxesRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
                 itemHolder.delete.setOnClickListener {
                     showDeleteDialog(it.context, box, position)
                 }
+
+                itemHolder.itemView.setOnLongClickListener {
+                    showDeleteDialog(it.context, box, position)
+                    true
+                }
             }
 
             SECTION_VIEW -> {
@@ -84,8 +89,13 @@ class BoxesRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
                     it.context.startActivity(Intent(it.context, NewLocalizationActivity::class.java).putExtra("Localization", local))
                 }
 
-                sectionHolder.delete.setOnClickListener {
+//                sectionHolder.delete.setOnClickListener {
+//                    showDeleteDialog(it.context, local, position)
+//                }
+
+                sectionHolder.itemView.setOnLongClickListener {
                     showDeleteDialog(it.context, local, position)
+                    true
                 }
             }
         }

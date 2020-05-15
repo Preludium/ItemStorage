@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pl.mik.itemstorage.R
@@ -22,8 +24,8 @@ class BoxesFragment : Fragment(), TabSwitch {
         val view = inflater.inflate(R.layout.fragment_localizations, container, false)
         recyclerView = view.findViewById(R.id.localizations_recycler)
         recyclerView.layoutManager = LinearLayoutManager(activity)
-//        recyclerView.addItemDecoration(DividerItemDecoration(context, (recyclerView.layoutManager as LinearLayoutManager).orientation))
         recyclerView.setHasFixedSize(true)
+        recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         recyclerView.adapter = BoxesRecyclerViewAdapter()
 
         return view
@@ -31,18 +33,10 @@ class BoxesFragment : Fragment(), TabSwitch {
 
     override fun onResume() {
         super.onResume()
-        recyclerView = view!!.findViewById(R.id.localizations_recycler)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-//        recyclerView.addItemDecoration(DividerItemDecoration(context, (recyclerView.layoutManager as LinearLayoutManager).orientation))
-        recyclerView.setHasFixedSize(true)
         recyclerView.adapter = BoxesRecyclerViewAdapter()
     }
 
     override fun fragmentBecameVisible() {
-        recyclerView = view!!.findViewById(R.id.localizations_recycler)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-//        recyclerView.addItemDecoration(DividerItemDecoration(context, (recyclerView.layoutManager as LinearLayoutManager).orientation))
-        recyclerView.setHasFixedSize(true)
         recyclerView.adapter = BoxesRecyclerViewAdapter()
     }
 }

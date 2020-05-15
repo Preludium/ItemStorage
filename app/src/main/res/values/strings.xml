@@ -38,7 +38,7 @@
     <string name="create">Create</string>
     <string name="title_activity_images">ImagesActivity</string>
     <string name="images">Select Images</string>
-    <string name="no_images_found_click_the_button_to_add_one">No Images found. Click the button to add one</string>
+    <string name="no_images_found_click_the_button_to_add_one">No Images found. \nClick the button to add one</string>
     <string name="dismiss">Dismiss</string>
     <string name="select_localization">Select Localization</string>
     <string name="add_code">Add Code</string>

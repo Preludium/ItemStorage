@@ -16,13 +16,15 @@
         android:clipToPadding="false"
         android:padding="4dp"
         tools:listitem="@layout/activity_images"
-        tools:ignore="MissingConstraints"/>
+        tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/images_text_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:lines="2"
             android:text="@string/no_images_found_click_the_button_to_add_one"
+            android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

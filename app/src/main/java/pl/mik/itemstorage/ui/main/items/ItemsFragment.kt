@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pl.mik.itemstorage.R
@@ -21,8 +22,8 @@ class ItemsFragment : Fragment(), TabSwitch{
         val view = inflater.inflate(R.layout.fragment_localizations, container, false)
         recyclerView = view.findViewById(R.id.localizations_recycler)
         recyclerView.layoutManager = LinearLayoutManager(activity)
-//        recyclerView.addItemDecoration(DividerItemDecoration(context, (recyclerView.layoutManager as LinearLayoutManager).orientation))
         recyclerView.setHasFixedSize(true)
+        recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         recyclerView.adapter = ItemsRecyclerViewAdapter()
         return view
     }

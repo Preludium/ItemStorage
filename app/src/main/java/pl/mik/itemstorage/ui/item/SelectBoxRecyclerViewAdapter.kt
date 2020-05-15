@@ -18,9 +18,11 @@ class SelectBoxRecyclerViewAdapter(selectedBox: Box?) :
     private var lastCheckedPos = -1
 
     init {
-        App.database?.boxes()?.getAll()?.let { boxes.addAll(it) }
-        selectedBox?.let {lastChecked}
-        selectedBox?.let {lastCheckedPos = boxes.indexOf(it)}
+        boxes.addAll(App.database!!.boxes().getAllByUserId(App.session!!.userId).sortedBy { it.name })
+        if (selectedBox != null) {
+            lastChecked = boxes.find { it.id == selectedBox.id}
+            lastCheckedPos = boxes.indexOf(selectedBox)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int ): SelectBoxItemViewHolder {

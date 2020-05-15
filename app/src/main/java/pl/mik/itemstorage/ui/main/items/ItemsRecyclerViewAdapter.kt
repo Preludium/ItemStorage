@@ -32,11 +32,11 @@ class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 
     private fun createList() {
         flattenList = ArrayList()
-        val boxes = App.database?.boxes()?.getAll()
+        val boxes = App.database?.boxes()?.getAllByUserId(App.session!!.userId)?.sortedBy { it.name }
         if (boxes != null) {
             for (box in boxes) {
                 flattenList.add(box)
-                for (item in App.database?.items()?.getAllItemsByBoxId(box.id)!!) {
+                for (item in App.database?.items()?.getAllItemsByBoxId(box.id)!!.sortedBy { it.name }) {
                     flattenList.add(item)
                 }
             }
@@ -78,6 +78,11 @@ class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
                 itemHolder.delete.setOnClickListener {
                     showDeleteDialog(it.context, item, position)
                 }
+
+                itemHolder.itemView.setOnLongClickListener {
+                    showDeleteDialog(it.context, item, position)
+                    true
+                }
             }
 
             SECTION_VIEW -> {
@@ -88,8 +93,13 @@ class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
                     it.context.startActivity(Intent(it.context, NewBoxActivity::class.java).putExtra("Box", box))
                 }
 
-                sectionHolder.delete.setOnClickListener {
+//                sectionHolder.delete.setOnClickListener {
+//                    showDeleteDialog(it.context, box, position)
+//                }
+
+                sectionHolder.itemView.setOnLongClickListener {
                     showDeleteDialog(it.context, box, position)
+                    true
                 }
             }
         }
@@ -139,6 +149,7 @@ class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
                     createList()
                 }
                 else {
+                    createList()
                     var helpList = ArrayList<Any>()
                     loop@ for (item in flattenList) {
                         when (item) {
@@ -147,9 +158,10 @@ class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
                             }
 
                             is Item -> {
-                                if (item.ean_upc_code!!.toLowerCase().contains(searchString)
+                                if ((item.ean_upc_code != null && item.ean_upc_code!!.toLowerCase().contains(searchString))
                                     || item.name.toLowerCase().contains(searchString)
-                                    || item.description!!.toLowerCase().contains(searchString)) {
+                                    || item.description!!.toLowerCase().contains(searchString)
+                                    || item.category!!.toLowerCase().contains(searchString)) {
 
                                     helpList.add(item)
                                 }
@@ -165,7 +177,7 @@ class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                flattenList = results?.values as ArrayList<Any>
+                flattenList = results!!.values as ArrayList<Any>
                 notifyDataSetChanged()
             }
         }

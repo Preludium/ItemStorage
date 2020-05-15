@@ -8,8 +8,8 @@ interface BoxDao {
     @Query("SELECT * FROM boxes WHERE id = :id")
     fun getBoxById(id: Int): Box
 
-    @Query("SELECt * FROM boxes")
-    fun getAll(): List<Box>
+    @Query("SELECt * FROM boxes WHERE user_id = :user_id")
+    fun getAllByUserId(user_id: Int): List<Box>
 
     @Query("SELECT * FROM boxes WHERE name = :name")
     fun getBoxByName(name: String): Box

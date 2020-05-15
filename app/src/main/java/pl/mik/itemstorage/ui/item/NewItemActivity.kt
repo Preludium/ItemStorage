@@ -82,8 +82,11 @@ class NewItemActivity : AppCompatActivity() {
                     Snackbar.make(it, "This EAN/UPC code exists", Snackbar.LENGTH_SHORT).show()
                 }
                 else -> {
-                    if (new_item_code.text.isNotEmpty())
-                        scannedCode = new_item_code.text.toString()
+                    scannedCode = if (new_item_code.text.isNotEmpty() && new_item_code.text.toString() != "Scan Code")
+                        new_item_code.text.toString()
+                    else
+                        null
+
                     if (updateItem != null) {
                         updateItem!!.name = new_item_name.text.toString()
                         updateItem!!.description = new_item_description.text.toString()
@@ -103,7 +106,6 @@ class NewItemActivity : AppCompatActivity() {
                         it.itemId = App.database?.items()?.getItemByName(new_item_name.text.toString())?.id!!
                 }
                     App.database?.imagesItem()?.insertAll(images)
-                    Toast.makeText(it.context, "Success", Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
@@ -156,13 +158,13 @@ class NewItemActivity : AppCompatActivity() {
                 .setTitle("\t\t\t\t\t\t\t\t\tSelect Box")
 
             val recyclerView: RecyclerView = dialogView.findViewById(R.id.select_dialog_recycler)
-            recyclerView.adapter = SelectBoxRecyclerViewAdapter(selectedBox)
             recyclerView.layoutManager = LinearLayoutManager(
                 applicationContext,
                 LinearLayoutManager.VERTICAL,
                 false
             )
-//            recyclerView.addItemDecoration(DividerItemDecoration(it.context, (recyclerView.layoutManager as LinearLayoutManager).orientation))
+            recyclerView.addItemDecoration(DividerItemDecoration(it.context, DividerItemDecoration.VERTICAL))
+            recyclerView.adapter = SelectBoxRecyclerViewAdapter(selectedBox)
 
             val alertDialog = builder.show()
 

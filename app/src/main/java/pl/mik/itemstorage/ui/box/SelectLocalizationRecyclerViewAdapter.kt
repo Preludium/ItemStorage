@@ -16,9 +16,11 @@ class SelectLocalizationRecyclerViewAdapter(selectedLocalization: Localization?)
     private var lastCheckedPos = -1
 
     init {
-        App.database?.localizations()?.getAll()?.let { locs.addAll(it) }
-        selectedLocalization?.let {lastChecked}
-        selectedLocalization?.let {lastCheckedPos = locs.indexOf(it)}
+        locs.addAll(App.database!!.localizations().getAllByUserId(App.session!!.userId).sortedBy { it.name })
+        if (selectedLocalization != null) {
+            lastChecked = locs.find { it.id == selectedLocalization.id}
+            lastCheckedPos = locs.indexOf(selectedLocalization)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int ): SelectLocalizationItemViewHolder {

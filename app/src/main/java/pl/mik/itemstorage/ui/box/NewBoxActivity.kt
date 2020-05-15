@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_new_box.*
 import kotlinx.android.synthetic.main.content_new_box.*
+import kotlinx.android.synthetic.main.content_new_item.*
 import kotlinx.android.synthetic.main.select_dialog.view.*
 import pl.mik.itemstorage.database.App
 import pl.mik.itemstorage.R
@@ -77,8 +78,11 @@ class NewBoxActivity : AppCompatActivity() {
                 }
 
                 else -> {
-                    if (new_box_code.text.isNotEmpty())
-                        scannedCode = new_box_code.text.toString()
+                    scannedCode = if (new_box_code.text.isNotEmpty() && new_box_code.text.toString() != "Scan Code")
+                        new_box_code.text.toString()
+                    else
+                        null
+
                     if (updateBox != null) {
                         updateBox!!.name = new_box_name.text.toString()
                         updateBox!!.description = new_box_description.text.toString()
@@ -97,7 +101,6 @@ class NewBoxActivity : AppCompatActivity() {
                         it.boxId = App.database?.boxes()?.getBoxByName(new_box_name.text.toString())?.id!!
                     }
                     App.database?.imagesBox()?.insertAll(images)
-                    Toast.makeText(it.context, "Success", Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
@@ -150,13 +153,13 @@ class NewBoxActivity : AppCompatActivity() {
                 .setTitle("\t\t\t\t\t\t\t\t\tSelect Localization")
 
             val recyclerView: RecyclerView = dialogView.findViewById(R.id.select_dialog_recycler)
-            recyclerView.adapter = SelectLocalizationRecyclerViewAdapter(selectedLocalization)
             recyclerView.layoutManager = LinearLayoutManager(
                 applicationContext,
                 LinearLayoutManager.VERTICAL,
                 false
             )
-//            recyclerView.addItemDecoration(DividerItemDecoration(it.context, (recyclerView.layoutManager as LinearLayoutManager).orientation))
+            recyclerView.addItemDecoration(DividerItemDecoration(it.context, DividerItemDecoration.VERTICAL))
+            recyclerView.adapter = SelectLocalizationRecyclerViewAdapter(selectedLocalization)
 
             val alertDialog = builder.show()
 

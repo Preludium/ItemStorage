@@ -4,7 +4,12 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.BitmapRegionDecoder
+import android.graphics.Rect
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Menu
@@ -35,6 +40,7 @@ class ImagesActivity : AppCompatActivity() {
 
     private val CAMERA_RC = 0
     private val CAMERA_PERMISSION_RC = 1
+    private val GALLERY_RC = 2
     private var extraName: String? = null
     private var cameraPermission: Boolean = false
 
@@ -59,12 +65,11 @@ class ImagesActivity : AppCompatActivity() {
         }
 
         viewManager = LinearLayoutManager(this)
-        viewAdapter =
-            ImagesRecyclerViewAdapter(images)
+        viewAdapter = ImagesRecyclerViewAdapter(images)
 
         recyclerView = images_recycler_view.apply {
             layoutManager = viewManager
-//            addItemDecoration(DividerItemDecoration(context, (viewManager as LinearLayoutManager).orientation))
+            addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
             adapter = viewAdapter
         }
 
@@ -92,7 +97,7 @@ class ImagesActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         when(requestCode) {
-            CAMERA_RC -> {
+            CAMERA_RC -> { //h - 252 w - 142
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val image = data.extras?.get("data") as Bitmap
                     val stream = ByteArrayOutputStream()
@@ -106,9 +111,29 @@ class ImagesActivity : AppCompatActivity() {
                             images.add(ImageItem(image = stream.toByteArray(), createdAt = Date()))
                         }
                     }
-                    Toast.makeText(this, "Image created", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "Image created", Toast.LENGTH_SHORT).show()
                 }
             }
+
+            GALLERY_RC -> {
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    val imageUri = data.data as Uri
+                    var bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 142, 252, true)
+                    val stream = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                    when (extraName) {
+                        "BoxImages" -> {
+                            images.add(ImageBox(image = stream.toByteArray(), createdAt = Date()))
+                        }
+
+                        "ItemImages" -> {
+                            images.add(ImageItem(image = stream.toByteArray(), createdAt = Date()))
+                        }
+                    }
+                }
+            }
+
             else -> {
                 Toast.makeText(this, "Bad request code", Toast.LENGTH_SHORT).show()
             }
@@ -133,6 +158,7 @@ class ImagesActivity : AppCompatActivity() {
             }
 
             R.id.action_gallery -> {
+                startActivityForResult(Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), GALLERY_RC)
                 return true
             }
         }

@@ -1,8 +1,10 @@
 package pl.mik.itemstorage.ui.main
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
@@ -17,9 +19,11 @@ import pl.mik.itemstorage.ui.item.NewItemActivity
 import pl.mik.itemstorage.ui.localization.NewLocalizationActivity
 import pl.mik.itemstorage.ui.main.boxes.BoxesFragment
 import pl.mik.itemstorage.ui.main.items.ItemsFragment
+import pl.mik.itemstorage.ui.scanner.ScannerActivity
 
 
 class MainActivity : AppCompatActivity() {
+    private val SCANNER_RC = 0
     lateinit var searchView: SearchView
     lateinit var itemsFragment: ItemsFragment
     lateinit var boxesFragment: BoxesFragment
@@ -38,19 +42,29 @@ class MainActivity : AppCompatActivity() {
             override fun onPageScrollStateChanged(state: Int) {
             }
 
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
             }
 
             override fun onPageSelected(position: Int) {
-                if(position == 0) {
+                if (position == 0) {
                     new_localization_fab.hide()
                     main_fab.setImageResource(android.R.drawable.ic_input_add)
-                    val fragment = (view_pager.adapter as MainPagerAdapter).instantiateItem(view_pager, position) as TabSwitch
+                    val fragment = (view_pager.adapter as MainPagerAdapter).instantiateItem(
+                        view_pager,
+                        position
+                    ) as TabSwitch
                     fragment.fragmentBecameVisible()
                 } else {
                     new_localization_fab.show()
                     main_fab.setImageResource(R.drawable.ic_box_white_18dp)
-                    val fragment = (view_pager.adapter as MainPagerAdapter).instantiateItem(view_pager, position) as TabSwitch
+                    val fragment = (view_pager.adapter as MainPagerAdapter).instantiateItem(
+                        view_pager,
+                        position
+                    ) as TabSwitch
                     fragment.fragmentBecameVisible()
                 }
             }
@@ -70,7 +84,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        searchView.setQuery("", false);
+        searchView.setQuery("", true);
         searchView.clearFocus();
     }
 
@@ -78,16 +92,48 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.search_menu, menu)
         searchView = menu?.findItem(R.id.menu_search)?.actionView as SearchView
         configureSearch(searchView)
+        searchView.isIconifiedByDefault = true
         return true
     }
 
-    private fun configureSearch(searchView: SearchView)  {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_qr_code -> {
+                searchCode()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun searchCode() {
+        startActivityForResult(Intent(applicationContext, ScannerActivity::class.java), SCANNER_RC)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == SCANNER_RC) {
+                searchView.isIconified = false
+                searchView.setQuery(data?.extras?.get("CODE") as String, true)
+                searchView.clearFocus()
+            }
+        }
+    }
+
+    private fun configureSearch(searchView: SearchView) {
         searchView.setOnSearchClickListener {
             view_pager.currentItem = 0
         }
 
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+                if (view_pager.currentItem != 0)
+                    view_pager.currentItem = 0
+
+                itemsFragment.getAdapter().filter.filter(query)
+                searchView.clearFocus()
                 return false
             }
 

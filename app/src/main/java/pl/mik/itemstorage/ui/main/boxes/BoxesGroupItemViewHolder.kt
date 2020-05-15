@@ -8,7 +8,7 @@ import pl.mik.itemstorage.R
 
 class BoxesGroupItemViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
     val title: TextView = itemView.findViewById(R.id.list_item_group_title)
-    val delete: Button = itemView.findViewById(R.id.list_item_group_button)
+//    val delete: Button = itemView.findViewById(R.id.list_item_group_button)
 
     fun bind(title: String) {
         this.title.text = title
