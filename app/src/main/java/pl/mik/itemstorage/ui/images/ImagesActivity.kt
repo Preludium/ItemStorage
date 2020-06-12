@@ -97,9 +97,9 @@ class ImagesActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         when(requestCode) {
-            CAMERA_RC -> { //h - 252 w - 142
+            CAMERA_RC -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    val image = data.extras?.get("data") as Bitmap
+                    val image = Bitmap.createScaledBitmap(data.extras?.get("data") as Bitmap, 120, 160, true)
                     val stream = ByteArrayOutputStream()
                     image.compress(Bitmap.CompressFormat.PNG, 100, stream)
                     when (extraName) {
@@ -111,7 +111,6 @@ class ImagesActivity : AppCompatActivity() {
                             images.add(ImageItem(image = stream.toByteArray(), createdAt = Date()))
                         }
                     }
-//                    Toast.makeText(this, "Image created", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -119,7 +118,7 @@ class ImagesActivity : AppCompatActivity() {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val imageUri = data.data as Uri
                     var bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
-                    bitmap = Bitmap.createScaledBitmap(bitmap, 142, 252, true)
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 120, 160, true)
                     val stream = ByteArrayOutputStream()
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
                     when (extraName) {
@@ -180,9 +179,8 @@ class ImagesActivity : AppCompatActivity() {
 
         if (requestCode == CAMERA_PERMISSION_RC && permissions[0] == Manifest.permission.CAMERA) {
             this.cameraPermission = grantResults[0] == PackageManager.PERMISSION_GRANTED
-            val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            if (callCameraIntent.resolveActivity(packageManager) != null) {
-                startActivityForResult(callCameraIntent, CAMERA_RC)
+            if (this.cameraPermission) {
+                startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), CAMERA_RC)
             }
         }
     }
