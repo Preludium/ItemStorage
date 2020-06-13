@@ -105,12 +105,16 @@ class BoxesRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         when (item) {
             is Box -> {
                 val builder = AlertDialog.Builder(context)
-                builder.setMessage("Are you sure you want to delete ${item.name} box with all items in it?")
+                builder.setMessage("Are you sure you want to delete ${item.name} box?")
                     .setCancelable(false)
                     .setPositiveButton("Yes") { dialog, id ->
                         flattenList.removeAt(position)
                         notifyItemRemoved(position)
                         notifyItemRangeChanged(position, flattenList.size)
+                        for (iitem in App.database?.items()?.getAllItemsByBoxId(item.id)!!) {
+                            iitem.boxId = null
+                            App.database?.items()?.update(iitem)
+                        }
                         App.database?.boxes()?.delete(item)
                     }
                     .setNegativeButton("No") { dialog, id ->

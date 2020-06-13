@@ -5,6 +5,9 @@ import pl.mik.itemstorage.database.entities.Item
 
 @Dao
 interface ItemDao {
+    @Query("SELECT * FROM items")
+    fun getAll(): List<Item>
+
     @Query("SELECT * FROM items WHERE id = :id")
     fun getItemById(id: Int): Item
 

@@ -24,7 +24,7 @@ class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     private val ITEM_VIEW = 0
     private val SECTION_VIEW = 1
     private var flattenList: ArrayList<Any> = ArrayList()
-//    private var filteredList = ArrayList<Any>()
+    private val emptyBox = Box("Others", null, null, App.session?.userId!!, 0)
 
     init {
         createList()
@@ -37,6 +37,14 @@ class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             for (box in boxes) {
                 flattenList.add(box)
                 for (item in App.database?.items()?.getAllItemsByBoxId(box.id)!!.sortedBy { it.name }) {
+                    flattenList.add(item)
+                }
+            }
+        }
+        if (!App.database?.items()?.getAll().isNullOrEmpty() && !flattenList.containsAll(App.database?.items()?.getAll()!!)) {
+            flattenList.add(emptyBox)
+            for (item in App.database?.items()?.getAll()!!) {
+                if (!flattenList.contains(item)) {
                     flattenList.add(item)
                 }
             }
@@ -90,7 +98,9 @@ class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
                 val sectionHolder = holder as ItemsGroupItemViewHolder
                 sectionHolder.bind(box.name)
                 sectionHolder.itemView.setOnClickListener {
-                    it.context.startActivity(Intent(it.context, NewBoxActivity::class.java).putExtra("Box", box))
+                    if (box != emptyBox) {
+                        it.context.startActivity(Intent(it.context, NewBoxActivity::class.java).putExtra("Box", box))
+                    }
                 }
 
 //                sectionHolder.delete.setOnClickListener {
@@ -98,7 +108,9 @@ class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 //                }
 
                 sectionHolder.itemView.setOnLongClickListener {
-                    showDeleteDialog(it.context, box, position)
+                    if (box != emptyBox) {
+                        showDeleteDialog(it.context, box, position)
+                    }
                     true
                 }
             }
@@ -109,9 +121,13 @@ class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         when (item) {
             is Box -> {
                 val builder = AlertDialog.Builder(context)
-                builder.setMessage("Are you sure you want to delete ${item.name} box with all items in it?")
+                builder.setMessage("Are you sure you want to delete ${item.name} box?")
                     .setCancelable(false)
                     .setPositiveButton("Yes") { dialog, id ->
+                        for (iitem in App.database?.items()?.getAllItemsByBoxId(item.id)!!) {
+                            iitem.boxId = null
+                            App.database?.items()?.update(iitem)
+                        }
                         App.database?.boxes()?.delete(item)
                         createList()
                         notifyDataSetChanged()
@@ -128,8 +144,13 @@ class ItemsRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
                     .setCancelable(false)
                     .setPositiveButton("Yes") { dialog, id ->
                         flattenList.removeAt(position)
-                        notifyItemRemoved(position)
-                        notifyItemRangeChanged(position, flattenList.size)
+                        if (flattenList.contains(emptyBox) && flattenList.size - 1 == flattenList.indexOf(emptyBox)) {
+                            flattenList.removeAt(flattenList.indexOf(emptyBox))
+                            notifyDataSetChanged()
+                        } else {
+                            notifyItemRemoved(position)
+                            notifyItemRangeChanged(position, flattenList.size)
+                        }
                         App.database?.items()?.delete(item)
                     }
                     .setNegativeButton("No") { dialog, id ->

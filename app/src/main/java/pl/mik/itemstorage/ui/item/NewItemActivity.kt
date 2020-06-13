@@ -66,9 +66,9 @@ class NewItemActivity : AppCompatActivity() {
                     Snackbar.make(it, "Item name already exists", Snackbar.LENGTH_SHORT).show()
                 }
 
-                selectedBox == null -> {
-                    Snackbar.make(it, "Choose box", Snackbar.LENGTH_SHORT).show()
-                }
+//                selectedBox == null -> {
+//                    Snackbar.make(it, "Choose box", Snackbar.LENGTH_SHORT).show()
+//                }
 
                 updateItem == null
                         && scannedCode != null
@@ -90,7 +90,7 @@ class NewItemActivity : AppCompatActivity() {
                     if (updateItem != null) {
                         updateItem!!.name = new_item_name.text.toString()
                         updateItem!!.description = new_item_description.text.toString()
-                        updateItem!!.boxId = selectedBox!!.id
+                        updateItem!!.boxId = selectedBox?.id
                         updateItem!!.ean_upc_code = scannedCode
                         updateItem!!.category = new_item_category.text.toString()
                         App.database?.items()?.update(updateItem!!)
@@ -99,7 +99,7 @@ class NewItemActivity : AppCompatActivity() {
                             new_item_name.text.toString(),
                             new_item_category.text.toString(),
                             new_item_description.text.toString(),
-                            selectedBox!!.id,
+                            selectedBox?.id,
                             scannedCode
                             ))
                     images.forEach {
