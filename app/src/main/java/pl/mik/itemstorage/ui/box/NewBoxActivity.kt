@@ -24,6 +24,7 @@ import pl.mik.itemstorage.database.entities.Box
 import pl.mik.itemstorage.database.entities.ImageBox
 import pl.mik.itemstorage.database.entities.Localization
 import pl.mik.itemstorage.ui.images.ImagesActivity
+import pl.mik.itemstorage.ui.searchScanner.SearchScannerActivity
 import kotlin.collections.ArrayList
 
 
@@ -188,6 +189,14 @@ class NewBoxActivity : AppCompatActivity() {
             val alert = builder.create()
             alert.show()
             true
+        }
+
+        search_scanner.setOnClickListener {
+            if (scannedCode != null) {
+                startActivity(Intent(it.context, SearchScannerActivity::class.java).putExtra("ScannedCode", scannedCode))
+            } else {
+                Snackbar.make(it, "Provide Code to search it", Snackbar.LENGTH_SHORT).show()
+            }
         }
     }
 

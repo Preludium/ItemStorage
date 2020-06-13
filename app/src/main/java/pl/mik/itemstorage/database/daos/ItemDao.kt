@@ -18,7 +18,7 @@ interface ItemDao {
     fun getTheRestOfNames(name: String): List<String>
 
     @Query("SELECT EAN_UPC_code FROM items")
-    fun getAllEanUpcCodes(): String
+    fun getAllEanUpcCodes(): List<String>
 
     @Query("SELECT EAN_UPC_code FROM items WHERE EAN_UPC_code NOT LIKE :EAN_UPC_code")
     fun getTheRestOfEanUpcCodes(EAN_UPC_code: String): List<String>
