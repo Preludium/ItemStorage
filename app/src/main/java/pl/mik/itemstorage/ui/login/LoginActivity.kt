@@ -27,17 +27,20 @@ class LoginActivity : AppCompatActivity() {
         val register = findViewById<TextView>(R.id.signup_text)
 
         login.setOnClickListener {
-            if (username.text.isEmpty() && password.text.isEmpty()) { // easy access for tests
-                val user = User(name = "mik", password = "admin123")
-                if (App.database?.users()?.getUserByName(user.name) != user) {
-                    App.database?.users()?.insert(user)
-                }
-                App.session = App.database?.users()?.getUserByName("mik")?.id?.let { it1 ->
-                    Session(it1)
-                }
-                startActivity(Intent(applicationContext, MainActivity::class.java))
-            }
-            else {
+//            if (username.text.isEmpty() && password.text.isEmpty()) { // easy access for tests
+//                val user = User(name = "mik", password = "admin123")
+//                if (App.database?.users()?.getUserByName(user.name) != user) {
+//                    App.database?.users()?.insert(user)
+//                }
+//                App.session = App.database?.users()?.getUserByName("mik")?.id?.let { it1 ->
+//                    Session(it1)
+//                }
+//                startActivity(Intent(applicationContext, MainActivity::class.java))
+//            }
+//            else {
+            if(username.text.isEmpty() || password.text.isEmpty()) {
+                Snackbar.make(it, "Fill all boxes", Snackbar.LENGTH_LONG).show()
+            } else {
                 val user: User? = App.database?.users()?.getUserByName(username.text.toString())
                 if (user == null) {
                     Snackbar.make(it, "This user does not exist", Snackbar.LENGTH_LONG).show()
@@ -51,6 +54,7 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(Intent(applicationContext, MainActivity::class.java))
                 }
             }
+//            }
         }
 
         register.setOnClickListener {
