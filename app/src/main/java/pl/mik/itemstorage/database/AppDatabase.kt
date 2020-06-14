@@ -43,9 +43,6 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         fun exportDatabaseFile(context: Context) {
-            println("KUPA")
-            println(context.getDatabasePath(DATABASE_NAME).absolutePath)
-            println(Environment.getExternalStorageDirectory().absolutePath + "/Download/" + DATABASE_NAME)
             try {
                 copyDataFromOneToAnother(context.getDatabasePath(DATABASE_NAME).path,
                     Environment.getExternalStorageDirectory().path + "/Download/" + DATABASE_NAME)
