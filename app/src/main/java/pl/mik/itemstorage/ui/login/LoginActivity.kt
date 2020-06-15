@@ -98,9 +98,6 @@ class LoginActivity : AppCompatActivity() {
                 && permissions[0] == Manifest.permission.WRITE_EXTERNAL_STORAGE
                 && permissions[1] == Manifest.permission.READ_EXTERNAL_STORAGE) {
                 this.storagePermission = grantResults[0] == PackageManager.PERMISSION_GRANTED
-                if (this.storagePermission) {
-                    AppDatabase.exportDatabaseFile(this)
-                }
             }
         }
     }
